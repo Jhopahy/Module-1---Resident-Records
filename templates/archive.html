@@ -1,0 +1,187 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+        <h1>Archived Residents</h1>
+        <div class="archive-count">
+            <small>Archived count</small>
+            <h3 id="archiveCount">0</h3>
+        </div>
+    </div>
+
+</div>
+
+<div class="panel">
+
+    <div style="display:flex;gap:10px;align-items:center;">
+
+        <input
+            type="text"
+            id="searchArchive"
+            placeholder="Search archived residents..."
+            style="flex:1;">
+
+        <button
+            class="btn btn-primary"
+            onclick="loadArchive()">
+
+            Search
+
+        </button>
+
+    </div>
+
+</div>
+
+<br>
+
+<div class="panel">
+
+    <table>
+
+        <thead>
+
+            <tr>
+
+                <th>Resident ID</th>
+
+                <th>Name</th>
+
+                <th>Sex</th>
+
+                <th>Age</th>
+
+                <th>Purok</th>
+
+                <th>Archived Date</th>
+
+                <th>Reason</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody id="archiveTable">
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script>
+
+function formatArchiveDate(value){
+
+    if(!value){
+        return "-";
+    }
+
+    const datePart = value.split(" ")[0];
+    const [year, month, day] = datePart.split("-");
+
+    return `${month}-${day}-${year}`;
+
+}
+
+function loadArchive(){
+
+    fetch("/api/residents/archive")
+
+    .then(response=>response.json())
+
+    .then(data=>{
+
+        document.getElementById("archiveCount").innerText = data.length;
+
+        const search =
+        document.getElementById("searchArchive")
+        .value
+        .toLowerCase();
+
+        const tbody =
+        document.getElementById("archiveTable");
+
+        tbody.innerHTML="";
+
+        data.forEach(resident=>{
+
+            const fullname =
+            (
+                resident.first_name +
+                " " +
+                resident.last_name
+            ).toLowerCase();
+
+            if(
+
+                fullname.includes(search)
+
+                ||
+
+                resident.resident_id
+                .toString()
+                .includes(search)
+
+            ){
+
+                tbody.innerHTML +=`
+
+                <tr>
+
+                    <td>${resident.resident_id}</td>
+
+                    <td>
+
+                        ${resident.first_name}
+
+                        ${resident.middle_name || ""}
+
+                        ${resident.last_name}
+
+                    </td>
+
+                    <td>${resident.sex || resident.gender}</td>
+
+                    <td>${resident.age}</td>
+
+                    <td>${resident.purok || "-"}</td>
+
+                    <td>${formatArchiveDate(resident.archived_date)}</td>
+
+                    <td>${resident.archived_reason || "-"}</td>
+
+                </tr>
+
+                `;
+
+            }
+
+        });
+
+    });
+
+}
+
+document
+.getElementById("searchArchive")
+.addEventListener(
+
+"keyup",
+
+loadArchive
+
+);
+
+loadArchive();
+
+</script>
+
+{% endblock %}

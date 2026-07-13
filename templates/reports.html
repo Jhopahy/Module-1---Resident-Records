@@ -1,0 +1,282 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <h1>Resident Reports</h1>
+
+</div>
+
+<!-- SUMMARY CARDS -->
+
+<div class="stats-row">
+
+    <div class="stat-card">
+        <h2>Total Residents</h2>
+        <h2 id="totalResidents">0</h2>
+    </div>
+
+    <div class="stat-card">
+        <h2>Total Blotter Respondents</h2>
+        <h2 id="respondentCount">0</h2>
+    </div>
+
+</div>
+
+<br>
+
+<div class="reports-grid">
+    <div class="panel report-panel">
+        <div class="panel-heading">
+            <h3>Residents by Purok</h3>
+        </div>
+        <div class="table-wrap">
+            <table class="report-table">
+                <thead>
+                    <tr>
+                        <th>Purok</th>
+                        <th>Total Residents</th>
+                    </tr>
+                </thead>
+                <tbody id="purokTable"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="panel report-panel">
+        <div class="panel-heading">
+            <h3>Sex Distribution</h3>
+        </div>
+        <div class="table-wrap">
+            <table class="report-table">
+                <thead>
+                    <tr>
+                        <th>Sex</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody id="sexTable"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="panel report-panel">
+    <div class="panel-heading">
+        <h3>Age Distribution</h3>
+    </div>
+    <div class="table-wrap">
+        <table class="report-table">
+            <thead>
+                <tr>
+                    <th>Category</th>
+                    <th>Age Range</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody id="ageTable"></tbody>
+        </table>
+    </div>
+</div>
+
+<div class="panel report-panel">
+    <div class="panel-heading">
+        <h3>Blotter Report Respondents</h3>
+    </div>
+    <div class="report-toolbar">
+        <input type="text" id="searchRespondents" placeholder="Search respondents by ID or name...">
+        <button class="btn btn-primary" onclick="filterRespondents()">Search</button>
+    </div>
+    <div class="table-wrap">
+        <table class="report-table">
+            <thead>
+                <tr>
+                    <th>Resident ID</th>
+                    <th>Name</th>
+                    <th>Sex</th>
+                    <th>Purok</th>
+                    <th>Total Complaints</th>
+                </tr>
+            </thead>
+            <tbody id="respondentsTable"></tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script>
+
+// ========================================
+// SUMMARY
+// ========================================
+
+let currentRespondents = [];
+
+// Total Residents
+fetch("/api/reports/summary")
+.then(r => r.json())
+.then(data => {
+    document.getElementById("totalResidents").textContent =
+        data.total_residents || 0;
+});
+
+// Sex Distribution
+fetch("/api/reports/sex")
+.then(r => r.json())
+.then(data => {
+
+    const table = document.getElementById("sexTable");
+    table.innerHTML = "";
+
+    data.forEach(item => {
+
+        table.innerHTML += `
+            <tr>
+                <td>${item.sex}</td>
+                <td>${item.total}</td>
+            </tr>
+        `;
+
+    });
+
+});
+
+// Age Distribution
+fetch("/api/reports/age-distribution")
+.then(r => r.json())
+.then(data => {
+
+    const table = document.getElementById("ageTable");
+    table.innerHTML = "";
+
+    data.forEach(item => {
+
+        table.innerHTML += `
+            <tr>
+                <td>${item.category}</td>
+                <td>${item.range}</td>
+                <td>${item.total}</td>
+            </tr>
+        `;
+
+    });
+
+});
+
+// ========================================
+// BLOTTER REPORT RESPONDENTS
+// ========================================
+
+fetch("http://127.0.0.1:5002/api/involved-persons")
+.then(r => r.json())
+.then(data => {
+
+    currentRespondents = data.persons || [];
+
+    document.getElementById("respondentCount").textContent =
+        currentRespondents.length;
+
+    renderRespondents(currentRespondents);
+
+})
+.catch(error => console.error(error));
+
+// ========================================
+// Render Table
+// ========================================
+
+function renderRespondents(list) {
+
+    const table = document.getElementById("respondentsTable");
+
+    table.innerHTML = "";
+
+    list.forEach(item => {
+
+        const fullname = [
+            item.first_name,
+            item.middle_name,
+            item.last_name
+        ]
+        .filter(Boolean)
+        .join(" ");
+
+        table.innerHTML += `
+            <tr>
+                <td>${item.resident_id}</td>
+                <td>${fullname}</td>
+                <td>-</td>
+                <td>${item.address ? item.address.substring(0, 7) + "..." : "-"}</td>
+                <td>${item.total_reports}</td>
+            </tr>
+        `;
+
+    });
+
+}
+
+// ========================================
+// Search
+// ========================================
+
+function filterRespondents() {
+
+    const query = document
+        .getElementById("searchRespondents")
+        .value
+        .toLowerCase();
+
+    const filtered = currentRespondents.filter(item => {
+
+        const fullname = [
+            item.first_name,
+            item.middle_name,
+            item.last_name
+        ]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase();
+
+        return (
+            String(item.resident_id).includes(query) ||
+            fullname.includes(query)
+        );
+
+    });
+
+    renderRespondents(filtered);
+
+}
+
+// ========================================
+// PUROK
+// ========================================
+
+fetch("/api/reports/purok")
+.then(r => r.json())
+.then(data => {
+
+    const table = document.getElementById("purokTable");
+
+    table.innerHTML = "";
+
+    data.forEach(item => {
+
+        table.innerHTML += `
+            <tr>
+                <td>${item.purok || "-"}</td>
+                <td>${item.total}</td>
+            </tr>
+        `;
+
+    });
+
+});
+
+</script>
+
+{% endblock %}

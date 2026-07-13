@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="stats-grid">
+
+    <!-- Residents -->
+    <div class="stat-card residents">
+        <div class="stat-icon">
+            <i class="fas fa-users"></i>
+        </div>
+
+        <div class="stat-info">
+            <h4>Total Residents</h4>
+            <h2>{{ residents }}</h2>
+        </div>
+    </div>
+
+    <!-- Certificates -->
+    <div class="stat-card certificates">
+        <div class="stat-icon">
+            <i class="fas fa-file-signature"></i>
+        </div>
+
+        <div class="stat-info">
+            <h4>Certificates Issued</h4>
+            <h2 id="certificateCount">Loading...</h2>
+        </div>
+    </div>
+
+    <!-- Blotters -->
+    <div class="stat-card blotters">
+        <div class="stat-icon">
+            <i class="fas fa-scale-balanced"></i>
+        </div>
+
+        <div class="stat-info">
+            <h4>Blotter Records</h4>
+            <h2 id="blotterCount">Loading...</h2>
+        </div>
+    </div>
+
+</div>
+
+<div class="officers-container">
+    <div class="barangay-officials-section">
+        <h3>BARANGAY OFFICIALS</h3>
+        <div class="officials-list">
+            <div class="official-row">
+                <div class="official-role-box">Captain</div>
+                <div class="official-names">Risa Hontiveros</div>
+            </div>
+            <div class="official-row kagawad-row">
+                <div class="official-role-box kagawad-highlight">Kagawads</div>
+                <div class="official-names">
+                    <div>Win Gatchalian</div>
+                    <div>Kiko Pangilinan</div>
+                    <div>Bam Aquino</div>
+                    <div>Eme Marcos</div>
+                    <div>Rodante Marcobeta</div>
+                    <div>Alana Cayetano</div>
+                    <div>Bobong Go</div>
+                </div>
+            </div>
+            <div class="official-row">
+                <div class="official-role-box">SK Chairperson</div>
+                <div class="official-names">Junggoy Estrada</div>
+            </div>
+            <div class="official-row">
+                <div class="official-role-box">Secretary</div>
+                <div class="official-names">Robin Padila</div>
+            </div>
+            <div class="official-row">
+                <div class="official-role-box">Treasurer</div>
+                <div class="official-names">Pia Tano</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="book-keeper-section">
+        <h3>Book Records Keeper</h3>
+        <div class="officials-list">
+            <div class="official-row">
+                <div class="official-role-box">System Admin</div>
+                <div class="official-names">Chel Diokno</div>
+            </div>
+        </div>
+        <div class="keeper-description">Responsible for maintaining all barangay residence records and documentation.</div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script>
+
+    async function loadCertificates() {
+
+        try {
+
+            const response = await fetch(
+                "http://127.0.0.1:5001/api/certificates/count"
+            );
+
+            if (!response.ok) {
+                throw new Error("Unable to fetch certificates");
+            }
+
+            const data = await response.json();
+
+            console.log(data);
+
+            document.getElementById("certificateCount").textContent =
+                data.total;
+
+        }
+
+        catch (error) {
+
+            console.error(error);
+
+            document.getElementById("certificateCount").textContent = "0";
+
+        }
+
+    }
+
+    async function loadBlotters() {
+
+        try {
+
+            const response = await fetch(
+                "http://127.0.0.1:5002/api/blotters/count"
+            );
+
+            if (!response.ok) {
+                throw new Error("Request failed");
+            }
+
+            const result = await response.json();
+
+            console.log(result);
+
+            document.getElementById("blotterCount").textContent =
+                result.total;
+
+        } catch (err) {
+
+            console.error(err);
+
+            document.getElementById("blotterCount").textContent = "0";
+
+        }
+
+    }
+
+    loadBlotters();
+
+    loadCertificates();
+
+</script>
+
+{% endblock %}

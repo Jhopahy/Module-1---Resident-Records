@@ -1,0 +1,737 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <h1 id="form-title">Add Resident</h1>
+
+</div>
+
+<div class="panel">
+
+    <form id="residentForm">
+
+        <div class="form-grid">
+
+            <div class="form-group">
+                <label for="first_name">First Name <span class="required">*</span></label>
+                <input type="text" id="first_name" required>
+                <small class="error-message" id="first_name_error"></small>
+            </div>
+
+            <div class="form-group">
+                <label for="middle_name">Middle Name</label>
+                <input type="text" id="middle_name">
+                <small class="error-message" id="middle_name_error"></small>
+            </div>
+
+            <div class="form-group">
+                <label for="last_name">Last Name <span class="required">*</span></label>
+                <input type="text" id="last_name" required>
+                <small class="error-message" id="last_name_error"></small>
+            </div>
+
+            <div class="form-group">
+                <label for="suffix">Suffix</label>
+
+                <select id="suffix" name="suffix">
+                    <option value="">None</option>
+                    <option value="Jr.">Jr.</option>
+                    <option value="Sr.">Sr.</option>
+                    <option value="I">I</option>
+                    <option value="II">II</option>
+                    <option value="III">III</option>
+                    <option value="IV">IV</option>
+                    <option value="V">V</option>
+                </select>
+
+                <small class="error-message" id="suffix_error"></small>
+            </div>
+
+            <div class="form-group">
+                <label for="birth_date">Birth Date <span class="required">*</span></label>
+                <input type="date" id="birth_date" required>
+                <small class="error-message" id="birth_date_error"></small>
+            </div>
+
+            <div class="form-group">
+                <label for="age">Age</label>
+                <input type="number" id="age" readonly>
+                <small class="error-message" id="age_error"></small>
+            </div>
+
+            <div class="form-group">
+                <label for="gender">Sex</label>
+                <select id="gender" required>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="civil_status">Civil Status</label>
+                <select id="civil_status" required>
+                    <option value="Single">Single</option>
+                    <option value="Married">Married</option>
+                    <option value="Widowed">Widowed</option>
+                    <option value="Separated">Separated</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="nationality">Nationality</label>
+                <input type="text" id="nationality" value="Filipino">
+            </div>
+
+            <div class="form-group">
+                <label for="religion">Religion</label>
+                <select id="religion" required>
+                    <option value="Roman Catholic">Roman Catholic</option>
+                    <option value="Iglesia ni Cristo">Iglesia ni Cristo</option>
+                    <option value="Islam">Islam</option>
+                    <option value="Christian">Christian</option>
+                    <option value="Muslim">Muslim</option>
+                    <option value="Jehovah's Witness">Jehovah's Witness</option>
+                    <option value="Others">Others</option>
+                </select>
+            </div>
+
+            <div class="form-group" id="religionOtherGroup" style="display: none;">
+                <label for="religion_other">Specify Religion</label>
+
+                <input type="text" id="religion_other" name="religion_other" placeholder="Enter religion">
+
+                <small class="error-message" id="religion_other_error"></small>
+            </div>
+
+            <div class="form-group">
+                <label for="occupation">Occupation</label>
+
+                <input type="text" id="occupation" name="occupation" placeholder="Enter occupation">
+
+                <small class="error-message" id="occupation_error"></small>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="house_number">
+                House Number <span class="required-mark">*</span>
+            </label>
+
+            <input type="text" id="house_number" name="house_number" placeholder="Enter house number" required>
+
+            <small class="error-message" id="house_number_error"></small>
+        </div>
+
+        <div class="form-group">
+            <label for="purok">Purok</label>
+            <select id="purok" required>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="contact_number_suffix">
+                Contact Number <span class="required-mark">*</span>
+            </label>
+
+            <div class="input-prefix-group">
+                <span class="prefix">09</span>
+                <input type="text" id="contact_number_suffix" name="contact_number_suffix" maxlength="9"
+                    pattern="[0-9]{9}" inputmode="numeric" placeholder="123456789" required>
+            </div>
+
+            <small class="error-message" id="contact_number_suffix_error"></small>
+        </div>
+
+        <div class="form-group">
+            <label for="email">
+                Email <span class="required-mark">*</span>
+            </label>
+
+            <input type="email" id="email" name="email" placeholder="Enter email address" required>
+
+            <small class="error-message" id="email_error"></small>
+        </div>
+</div>
+
+<div class="form-group">
+    <label for="years_of_residence">Years of Residence</label>
+    <input type="number" id="years_of_residence" min="0" value="0" required>
+</div>
+
+<div class="form-group">
+    <label for="months_of_residence">Months of Residence</label>
+    <input type="number" id="months_of_residence" min="0" max="11" value="0" required>
+</div>
+
+<div class="form-group">
+    <label for="voter_status">Registered Voter</label>
+    <select id="voter_status">
+        <option value="Yes">Yes</option>
+        <option value="No" selected>No</option>
+    </select>
+</div>
+
+</div>
+
+<div class="form-actions">
+    <button class="btn btn-primary" type="submit">Save Resident</button>
+</div>
+
+</form>
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script>
+
+    const residentId = "{{ resident_id|default('') }}";
+
+    // =========================
+    // Calculate Age
+    // =========================
+    function calculateAge(birthDate) {
+
+        if (!birthDate) return "";
+
+        const dob = new Date(birthDate);
+
+        if (isNaN(dob.getTime())) return "";
+
+        const today = new Date();
+
+        let age = today.getFullYear() - dob.getFullYear();
+
+        const monthDiff = today.getMonth() - dob.getMonth();
+
+        if (
+            monthDiff < 0 ||
+            (monthDiff === 0 && today.getDate() < dob.getDate())
+        ) {
+            age--;
+        }
+
+        return age;
+    }
+
+    function updateAgeField() {
+        const birthDate = document.getElementById("birth_date").value;
+        document.getElementById("age").value = calculateAge(birthDate);
+    }
+
+    function calculatePeriodOfResidence(years, months) {
+        years = parseInt(years, 10);
+        months = parseInt(months, 10);
+
+        if (Number.isNaN(years) || Number.isNaN(months)) {
+            return "";
+        }
+
+        if (years < 0 || months < 0 || months > 11) {
+            return "";
+        }
+
+        const parts = [];
+        if (years > 0) parts.push(`${years} yr${years !== 1 ? "s" : ""}`);
+        if (months > 0) parts.push(`${months} mo${months !== 1 ? "s" : ""}`);
+        return parts.length ? parts.join(" ") : "0 mos";
+    }
+
+    function updatePeriodField() {
+        const years = document.getElementById("years_of_residence").value;
+        const months = document.getElementById("months_of_residence").value;
+        const el = document.getElementById("period_of_residence");
+        if (el) el.value = calculatePeriodOfResidence(years, months);
+    }
+
+    function toggleReligionOther() {
+        const religion = document.getElementById("religion").value;
+        const otherGroup = document.getElementById("religionOtherGroup");
+        otherGroup.style.display = religion === "Others" ? "block" : "none";
+    }
+
+    document.getElementById("birth_date").addEventListener("input", updateAgeField);
+    document.getElementById("birth_date").addEventListener("change", updateAgeField);
+    document.getElementById("years_of_residence").addEventListener("input", updatePeriodField);
+    document.getElementById("years_of_residence").addEventListener("change", updatePeriodField);
+    document.getElementById("months_of_residence").addEventListener("input", updatePeriodField);
+    document.getElementById("months_of_residence").addEventListener("change", updatePeriodField);
+    document.getElementById("religion").addEventListener("change", toggleReligionOther);
+
+    // Title-case formatting for text fields (Aa format)
+    function toTitleCase(str) {
+        return str.replace(/\w\S*/g, function (txt) {
+            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+        });
+    }
+
+    ['first_name', 'middle_name', 'last_name', 'suffix', 'occupation', 'nationality', 'religion_other'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.addEventListener('blur', e => {
+                if (e.target.value) e.target.value = toTitleCase(e.target.value.trim());
+            });
+        }
+    });
+
+    // Restrict contact suffix to digits only
+    const contactSuffixEl = document.getElementById('contact_number_suffix');
+    if (contactSuffixEl) {
+        contactSuffixEl.addEventListener('input', function (e) {
+            this.value = this.value.replace(/\D/g, '').slice(0, 9);
+        });
+    }
+
+    // =========================
+    // Load Resident for Edit
+    // =========================
+    if (residentId) {
+
+        document.getElementById("form-title").textContent =
+            "Edit Resident";
+
+        fetch(`/api/residents/${residentId}`)
+
+            .then(response => response.json())
+
+            .then(resident => {
+
+                Object.keys(resident).forEach(key => {
+
+                    const field = document.getElementById(key);
+
+                    if (field) {
+                        field.value = resident[key];
+                    }
+
+                });
+
+                if (resident.religion === "Others") {
+                    document.getElementById("religion").value = "Others";
+                    document.getElementById("religion_other").value = resident.religion_other || "";
+                }
+
+                // populate contact suffix (strip leading '09' if present)
+                if (resident.contact_number) {
+                    const cn = String(resident.contact_number || '');
+                    const suffixEl = document.getElementById('contact_number_suffix');
+                    if (suffixEl) {
+                        if (cn.startsWith('09')) {
+                            suffixEl.value = cn.slice(2);
+                        } else {
+                            // if stored without prefix, attempt to trim to last 9 digits
+                            suffixEl.value = cn.slice(-9);
+                        }
+                    }
+                }
+
+                updateAgeField();
+                updatePeriodField();
+                toggleReligionOther();
+
+            })
+
+            .catch(error => {
+
+                console.error(error);
+
+                alert("Unable to load resident.");
+
+            });
+
+    }
+
+    function showError(id, message) {
+
+        const field = document.getElementById(id);
+        const error = document.getElementById(id + "_error");
+
+        if (field) {
+            field.classList.remove("input-success");
+            field.classList.add("input-error");
+        }
+
+        if (error) {
+            error.textContent = message;
+        }
+    }
+
+    function showSuccess(id) {
+
+        const field = document.getElementById(id);
+        const error = document.getElementById(id + "_error");
+
+        if (field) {
+            field.classList.remove("input-error");
+            field.classList.add("input-success");
+        }
+
+        if (error) {
+            error.textContent = "";
+        }
+    }
+    // =========================
+    // Save Resident
+    // =========================
+    document
+        .getElementById("residentForm")
+        .addEventListener("submit", function (e) {
+
+            e.preventDefault();
+
+            let valid = true;
+
+            // FIRST NAME
+            let first = document.getElementById("first_name").value.trim();
+
+            if (first == "") {
+
+                showError("first_name", "First name is required.");
+                valid = false;
+
+            } else if (!/^[A-Za-z ]+$/.test(first)) {
+
+                showError("first_name", "Only letters are allowed.");
+                valid = false;
+
+            } else if (/(.)\1{2,}/i.test(first)) {
+
+                showError("first_name", "Three or more consecutive identical letters are not allowed.");
+                valid = false;
+
+            } else if (first.length < 2) {
+
+                showError("first_name", "Minimum of 2 characters.");
+                valid = false;
+
+            } else {
+
+                showSuccess("first_name");
+
+            }
+
+            // MIDDLE NAME
+            let middle = document.getElementById("middle_name").value.trim();
+
+            if (middle != "" && !/^[A-Za-z ]+$/.test(middle)) {
+
+                showError("middle_name", "Only letters are allowed.");
+                valid = false;
+
+            } else if (middle != "" && /(.)\1{2,}/i.test(middle)) {
+
+                showError("middle_name", "Three or more consecutive identical letters are not allowed.");
+                valid = false;
+
+            } else {
+
+                showSuccess("middle_name");
+
+            }
+
+            // LAST NAME
+            let last = document.getElementById("last_name").value.trim();
+
+            if (last == "") {
+
+                showError("last_name", "Last name is required.");
+                valid = false;
+
+            } else if (!/^[A-Za-z ]+$/.test(last)) {
+
+                showError("last_name", "Only letters are allowed.");
+                valid = false;
+
+            } else if (/(.)\1{2,}/i.test(last)) {
+
+                showError("last_name", "Three or more consecutive identical letters are not allowed.");
+                valid = false;
+
+            } else {
+
+                showSuccess("last_name");
+
+            }
+
+            // SUFFIX
+            let nameSuffix = document.getElementById("suffix").value.trim();
+
+            const validSuffixes = [
+                "",
+                "JR",
+                "JR.",
+                "SR",
+                "SR.",
+                "I",
+                "II",
+                "III",
+                "IV",
+                "V"
+            ];
+
+            if (!validSuffixes.includes(nameSuffix.toUpperCase())) {
+                showError(
+                    "suffix",
+                    "Suffix must be Jr., Sr., I, II, III, IV or V."
+                );
+                valid = false;
+            } else {
+                showSuccess("suffix");
+
+            }
+
+            // BIRTHDAY
+            // BIRTH DATE VALIDATION
+            let birth = document.getElementById("birth_date").value;
+            const ageInput = document.getElementById("age");
+
+            if (birth === "") {
+
+                showError("birth_date", "Birth date is required.");
+                ageInput.value = "";
+                valid = false;
+
+            } else {
+
+                const today = new Date();
+                const dob = new Date(birth);
+
+                // Remove time para tama ang comparison
+                today.setHours(0, 0, 0, 0);
+                dob.setHours(0, 0, 0, 0);
+
+                if (dob > today) {
+
+                    showError("birth_date", "Birth date cannot be in the future.");
+                    ageInput.value = "";
+                    valid = false;
+
+                } else {
+
+                    let age = today.getFullYear() - dob.getFullYear();
+
+                    const monthDiff = today.getMonth() - dob.getMonth();
+
+                    if (
+                        monthDiff < 0 ||
+                        (monthDiff === 0 && today.getDate() < dob.getDate())
+                    ) {
+                        age--;
+                    }
+
+                    ageInput.value = age;
+
+                    if (age < 1) {
+
+                        showError("birth_date", "Age must be at least 1 year old.");
+                        ageInput.value = "";
+                        valid = false;
+
+                    } else if (age > 120) {
+
+                        showError("birth_date", "Age cannot exceed 120 years.");
+                        ageInput.value = "";
+                        valid = false;
+
+                    } else {
+
+                        showSuccess("birth_date");
+                        showSuccess("age");
+
+                    }
+                }
+            }
+
+            if (!valid) {
+                return;
+            }
+
+            const data = {};
+
+            document
+                .querySelectorAll("input, select")
+                .forEach(field => {
+                    if (!field.disabled && field.id) {
+                        data[field.id] = field.value;
+                    }
+                });
+
+            // combine contact number (prefix '09' + 9-digit suffix)
+            const contactSuffix = document.getElementById("contact_number_suffix").value.trim();
+
+            if (contactSuffix) {
+                data.contact_number = "09" + contactSuffix;
+                delete data.contact_number_suffix;
+            }
+
+            // CONTACT NUMBER
+            if (!contactSuffix) {
+
+                showError(
+                    "contact_number_suffix",
+                    "Contact number is required."
+                );
+
+                valid = false;
+
+            } else if (!/^\d{9}$/.test(contactSuffix)) {
+
+                showError(
+                    "contact_number_suffix",
+                    "Enter exactly 9 digits."
+                );
+
+                valid = false;
+
+            } else {
+
+                showSuccess("contact_number_suffix");
+
+            }
+
+            // HOUSE NUMBER
+            if (!data.house_number.trim()) {
+
+                showError(
+                    "house_number",
+                    "House number is required."
+                );
+
+                valid = false;
+
+            } else {
+
+                showSuccess("house_number");
+
+            }
+
+            // OCCUPATION
+            // OCCUPATION
+            let occupation = document.getElementById("occupation").value.trim();
+
+            if (occupation !== "") {
+
+                if (!/^[A-Za-z ]+$/.test(occupation)) {
+
+                    showError(
+                        "occupation",
+                        "Only letters are allowed."
+                    );
+
+                    valid = false;
+
+                } else if (/(.)\1{2,}/i.test(occupation)) {
+
+                    showError(
+                        "occupation",
+                        "Three or more consecutive identical letters are not allowed."
+                    );
+
+                    valid = false;
+
+                } else if (occupation.length < 2) {
+
+                    showError(
+                        "occupation",
+                        "Occupation must be at least 2 characters."
+                    );
+
+                    valid = false;
+
+                } else {
+
+                    showSuccess("occupation");
+
+                }
+
+            } else {
+
+                // Optional ang occupation
+                showSuccess("occupation");
+
+            }
+
+            // EMAIL
+            if (data.email.trim()) {
+
+                const emailRe =
+                    /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+                if (!emailRe.test(data.email.trim())) {
+
+                    showError(
+                        "email",
+                        "Enter a valid email address."
+                    );
+
+                    valid = false;
+
+                } else {
+
+                    showSuccess("email");
+
+                }
+
+            }
+
+            // STOP IF INVALID
+            if (!valid) {
+                return;
+            }
+            const url = residentId
+                ? `/api/residents/${residentId}`
+                : "/api/residents";
+
+            const method = residentId
+                ? "PUT"
+                : "POST";
+
+            fetch(url, {
+
+                method: method,
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify(data)
+
+            })
+
+                .then(async response => {
+                    let result = null;
+                    try {
+                        result = await response.json();
+                    } catch (err) {
+                        const text = await response.text();
+                        console.error('Non-JSON response while saving resident:', text || err);
+                        alert(text || 'Server returned an error.');
+                        return;
+                    }
+
+                    if (response.ok) {
+                        alert(result.message || "Resident saved successfully.");
+                        window.location.href = "/residents";
+                    } else {
+                        alert(result.message || result.error || "Failed to save resident.");
+                    }
+                })
+                .catch(error => {
+                    console.error(error);
+                    alert("Unable to connect to the server.");
+                });
+
+        });
+
+</script>
+
+{% endblock %}

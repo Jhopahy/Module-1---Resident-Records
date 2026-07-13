@@ -1,0 +1,173 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <h1>Resident Profile</h1>
+
+    <div class="header-buttons">
+
+        <a href="/residents" class="btn btn-secondary">
+            Back
+        </a>
+
+        <a id="editBtn" class="btn btn-warning">
+            Edit
+        </a>
+
+    </div>
+
+</div>
+
+<div class="panel">
+
+    <table class="profile-table">
+
+                    <tr>
+                    <th>Resident ID</th>
+                    <td id="resident_id"></td>
+                </tr>
+
+                <tr>
+                    <th>First Name</th>
+                    <td id="first_name"></td>
+                </tr>
+
+                <tr>
+                    <th>Middle Name</th>
+                    <td id="middle_name"></td>
+                </tr>
+
+                <tr>
+                    <th>Last Name</th>
+                    <td id="last_name"></td>
+                </tr>
+
+                <tr>
+                    <th>Suffix</th>
+                    <td id="suffix"></td>
+                </tr>
+
+                <tr>
+                    <th>Birth Date</th>
+                    <td id="birth_date"></td>
+                </tr>
+
+                <tr>
+                    <th>Age</th>
+                    <td id="age"></td>
+                </tr>
+
+                <tr>
+                    <th>Sex</th>
+                    <td id="gender"></td>
+                </tr>
+
+                <tr>
+                    <th>Civil Status</th>
+                    <td id="civil_status"></td>
+                </tr>
+
+                <tr>
+                    <th>Nationality</th>
+                    <td id="nationality"></td>
+                </tr>
+
+                <tr>
+                    <th>Religion</th>
+                    <td id="religion"></td>
+                </tr>
+
+                <tr>
+                    <th>Occupation</th>
+                    <td id="occupation"></td>
+                </tr>
+
+                <tr>
+                    <th>Period of Residence</th>
+                    <td id="period_of_residence"></td>
+                </tr>
+
+                <tr>
+                    <th>House Number</th>
+                    <td id="house_number"></td>
+                </tr>
+
+                <tr>
+                    <th>Purok</th>
+                    <td id="purok"></td>
+                </tr>
+
+                <tr>
+                    <th>Contact Number</th>
+                    <td id="contact_number"></td>
+                </tr>
+
+                <tr>
+                    <th>Email</th>
+                    <td id="email"></td>
+                </tr>
+
+
+                <tr id="archived-date-row" style="display:none;">
+                    <th>Archived Date</th>
+                    <td id="archived_date"></td>
+                </tr>
+
+                <tr>
+                    <th>Date Created</th>
+                    <td id="date_created"></td>
+                </tr>
+
+                <tr>
+                    <th>Date Updated</th>
+                    <td id="date_updated"></td>
+                </tr>
+
+            </table>
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script>
+
+const residentId = "{{ resident_id }}";
+
+document.getElementById("editBtn").href =
+`/residents/${residentId}/edit`;
+
+fetch(`/api/residents/${residentId}`)
+
+.then(response => response.json())
+
+.then(resident => {
+
+    Object.keys(resident).forEach(key => {
+        const field = document.getElementById(key);
+        if(field){
+            field.innerHTML = resident[key] || "-";
+        }
+    });
+
+    document.getElementById("period_of_residence").innerHTML = resident.period_of_residence || "-";
+
+    const archivedRow = document.getElementById("archived-date-row");
+    const isArchived = resident.archived === 1 || resident.archived_date;
+
+    if(archivedRow){
+        archivedRow.style.display = isArchived ? "" : "none";
+        const archivedDateField = document.getElementById("archived_date");
+        if(archivedDateField){
+            archivedDateField.innerHTML = resident.archived_date || "-";
+        }
+    }
+
+});
+
+</script>
+
+{% endblock %}

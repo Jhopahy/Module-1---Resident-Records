@@ -1,0 +1,228 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <h1>Households</h1>
+
+</div>
+
+<div class="panel">
+
+    <div style="display:flex;gap:10px;">
+
+        <input
+            id="searchHousehold"
+            type="text"
+            placeholder="Search Household Number..."
+            style="flex:1;">
+
+        <button
+            class="btn btn-primary"
+            onclick="loadHouseholds()">
+
+            Search
+
+        </button>
+
+    </div>
+
+</div>
+
+<br>
+
+<div class="panel">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Household No.</th>
+
+<th>Household Head</th>
+
+<th>Address</th>
+
+<th>Members</th>
+
+<th>Action</th>
+
+</tr>
+
+</thead>
+
+<tbody id="householdTable">
+
+</tbody>
+
+</table>
+
+</div>
+
+<!-- Household Members -->
+
+<div
+class="panel"
+style="margin-top:20px;">
+
+<h3>Household Members</h3>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Resident ID</th>
+
+<th>Name</th>
+
+<th>Gender</th>
+
+<th>Age</th>
+
+</tr>
+
+</thead>
+
+<tbody id="memberTable">
+
+</tbody>
+
+</table>
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script>
+
+function loadHouseholds(){
+
+fetch("/api/households")
+
+.then(r=>r.json())
+
+.then(data=>{
+
+const search=
+document.getElementById("searchHousehold")
+.value
+.toLowerCase();
+
+const tbody=
+document.getElementById("householdTable");
+
+tbody.innerHTML="";
+
+data.forEach(h=>{
+
+if(
+
+h.household_number
+.toLowerCase()
+.includes(search)
+
+){
+
+tbody.innerHTML +=`
+
+<tr>
+
+<td>${h.household_number}</td>
+
+<td>${h.household_head}</td>
+
+<td>${h.address}</td>
+
+<td>${h.members}</td>
+
+<td>
+
+<button
+
+class="btn btn-info"
+
+onclick="viewMembers('${h.household_number}')">
+
+View
+
+</button>
+
+</td>
+
+</tr>
+
+`;
+
+}
+
+});
+
+});
+
+}
+
+function viewMembers(number){
+
+fetch(`/api/households/${number}`)
+
+.then(r=>r.json())
+
+.then(data=>{
+
+const tbody=
+document.getElementById("memberTable");
+
+tbody.innerHTML="";
+
+data.forEach(member=>{
+
+tbody.innerHTML +=`
+
+<tr>
+
+<td>${member.resident_number}</td>
+
+<td>
+
+${member.first_name}
+
+${member.last_name}
+
+</td>
+
+<td>${member.gender}</td>
+
+<td>${member.age}</td>
+
+</tr>
+
+`;
+
+});
+
+});
+
+}
+
+document
+.getElementById("searchHousehold")
+.addEventListener(
+
+"keyup",
+
+loadHouseholds
+
+);
+
+loadHouseholds();
+
+</script>
+
+{% endblock %}

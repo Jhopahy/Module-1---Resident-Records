@@ -1,0 +1,315 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <h1>System Integration</h1>
+
+</div>
+
+<div class="dashboard-grid">
+
+    <!-- Residence Records -->
+
+    <div class="panel">
+
+        <h3>
+            <i class="fas fa-users"></i>
+            Residence Records
+        </h3>
+
+        <hr>
+
+        <p><strong>Status:</strong>
+            <span class="status-green">
+                Connected
+            </span>
+        </p>
+
+        <p>
+            Stores all resident information used by
+            the Barangay Information System.
+        </p>
+
+    </div>
+
+    <!-- Certificates -->
+
+    <div class="panel">
+
+        <h3>
+            <i class="fas fa-file-alt"></i>
+            Barangay Certificates
+        </h3>
+
+        <hr>
+
+        <p><strong>Status:</strong>
+            <span class="status-green">
+                Connected
+            </span>
+        </p>
+
+        <p>
+            Retrieves resident records directly
+            from the Residence Records database
+            before issuing certificates.
+        </p>
+
+    </div>
+
+    <!-- Blotter -->
+
+    <div class="panel">
+
+        <h3>
+            <i class="fas fa-gavel"></i>
+            Blotter Management
+        </h3>
+
+        <hr>
+
+        <p><strong>Status:</strong>
+            <span class="status-yellow">
+                Future Module
+            </span>
+        </p>
+
+        <p>
+            Will use resident records
+            for complainants,
+            respondents,
+            and witnesses.
+        </p>
+
+    </div>
+
+    <!-- Clearance -->
+
+    <div class="panel">
+
+        <h3>
+            <i class="fas fa-id-card"></i>
+            Business Clearance
+        </h3>
+
+        <hr>
+
+        <p><strong>Status:</strong>
+            <span class="status-yellow">
+                Future Module
+            </span>
+        </p>
+
+        <p>
+            Business owners can be
+            selected directly from
+            resident records.
+        </p>
+
+    </div>
+
+</div>
+
+<br>
+
+<div class="panel">
+
+    <h3>Integration Overview</h3>
+
+    <table>
+
+        <thead>
+
+            <tr>
+
+                <th>Module</th>
+
+                <th>Uses Resident Data</th>
+
+                <th>Status</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            <tr>
+
+                <td>Residence Records</td>
+
+                <td>Primary Database</td>
+
+                <td>
+                    <span class="status-green">
+                        Active
+                    </span>
+                </td>
+
+            </tr>
+
+            <tr>
+
+                <td>Barangay Certificates</td>
+
+                <td>✔ Yes</td>
+
+                <td>
+                    <span class="status-green">
+                        Integrated
+                    </span>
+                </td>
+
+            </tr>
+
+            <tr>
+
+                <td>Reports</td>
+
+                <td>✔ Yes</td>
+
+                <td>
+                    <span class="status-green">
+                        Active
+                    </span>
+                </td>
+
+            </tr>
+
+            <tr>
+
+                <td>Resident Management</td>
+
+                <td>✔ Yes</td>
+
+                <td>
+                    <span class="status-green">
+                        Active
+                    </span>
+                </td>
+
+            </tr>
+
+            <tr>
+
+                <td>Archive</td>
+
+                <td>✔ Yes</td>
+
+                <td>
+                    <span class="status-green">
+                        Active
+                    </span>
+                </td>
+
+            </tr>
+
+            <tr>
+
+                <td>Blotter Management</td>
+
+                <td>Planned</td>
+
+                <td>
+                    <span class="status-yellow">
+                        Pending
+                    </span>
+                </td>
+
+            </tr>
+
+            <tr>
+
+                <td>Business Clearance</td>
+
+                <td>Planned</td>
+
+                <td>
+                    <span class="status-yellow">
+                        Pending
+                    </span>
+                </td>
+
+            </tr>
+
+        </tbody>
+
+    </table>
+
+</div>
+
+<br>
+
+<div class="panel">
+
+    <h3>System Information</h3>
+
+    <table>
+
+        <tr>
+
+            <th width="250">
+                System Name
+            </th>
+
+            <td>
+                Barangay Residence Records System
+            </td>
+
+        </tr>
+
+        <tr>
+
+            <th>
+                Version
+            </th>
+
+            <td>
+                Version 1.0
+            </td>
+
+        </tr>
+
+        <tr>
+
+            <th>
+                Database
+            </th>
+
+            <td>
+                SQLite
+            </td>
+
+        </tr>
+
+        <tr>
+
+            <th>
+                Framework
+            </th>
+
+            <td>
+                Flask
+            </td>
+
+        </tr>
+
+        <tr>
+
+            <th>
+                Integrated With
+            </th>
+
+            <td>
+                Barangay Certificates System
+            </td>
+
+        </tr>
+
+    </table>
+
+</div>
+
+{% endblock %}

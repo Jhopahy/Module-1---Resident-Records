@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Residence Records System</title>
+    <link rel="icon" href="{{ url_for('static', filename='images/icon.ico') }}" type="image/x-icon">
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <link rel="icon"
+          href="{{ url_for('static', filename='images/icon.ico') }}"
+          type="image/x-icon">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+<body>
+
+<div class="layout">
+
+    <!-- ========================= -->
+    <!-- SIDEBAR -->
+    <!-- ========================= -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+            <img class="brand-image" src="{{ url_for('static', filename='images/logo.png') }}" alt="logo" >
+            <div class="brand-text">
+                <small>BRGY. Meronna</small>
+                <h2>Barangay E-<br>Management System</h2>
+                <small>RESIDENCE RECORDS</small>
+            </div>
+        </div>
+
+        <ul class="sidebar-menu">
+
+            <li class="menu-title">
+                MAIN
+            </li>
+
+            <li>
+                <a href="{{ url_for('dashboard.dashboard') }}">
+                    <i class="fas fa-home"></i>
+                    Dashboard
+                </a>
+            </li>
+
+            <li>
+                <a href="/residents">
+                    <i class="fas fa-users"></i>
+                    Residents
+                </a>
+            </li>
+
+            <li>
+                <a href="/residents/new">
+                    <i class="fas fa-user-plus"></i>
+                    Add Resident
+                </a>
+            </li>
+
+            <li class="menu-title">
+                REPORTS
+            </li>
+
+            <li>
+                <a href="/reports">
+                    <i class="fas fa-plus-circle"></i>
+                    Resident Reports
+                </a>
+            </li>
+
+            <li class="menu-title">
+                RECORDS
+            </li>
+
+            <li>
+                <a href="/archive">
+                    <i class="fas fa-box-archive"></i>
+                    Archive
+                </a>
+            </li>
+
+
+        </ul>
+
+        <div class="sidebar-footer">
+
+            <div class="user-card">
+
+                <div class="user-avatar">
+                    BS
+                </div>
+
+                <div class="user-details">
+
+                    <strong>
+                        Chel Diokno
+                    </strong>
+
+                    <small>
+                        Records Keeper
+                    </small>
+                </div>
+            </div>
+
+            <a href="{{ url_for('logout') }}" style="display:flex;align-items:center;justify-content:center;gap:0.5rem;margin-top:0.75rem;padding:0.7rem 1rem;background:#dc2626;color:#fff;border-radius:0.75rem;text-decoration:none;font-weight:600;">
+                <i class="fas fa-right-from-bracket"></i>
+                <span>Logout</span>
+            </a>
+        </div>
+
+
+    </aside>
+
+    <!-- ========================= -->
+    <!-- MAIN CONTENT -->
+    <!-- ========================= -->
+
+    <main class="content">
+
+
+        <div class="page-content">
+
+            {% block content %}
+
+            {% endblock %}
+
+        </div>
+
+    </main>
+
+</div>
+
+<script>
+
+const today = new Date();
+
+document.getElementById("today").innerHTML =
+today.toLocaleDateString("en-PH",{
+    year:"numeric",
+    month:"long",
+    day:"numeric"
+});
+
+const currentPath = window.location.pathname.replace(/\/$/, "") || "/";
+const navLinks = document.querySelectorAll('.sidebar-menu li a');
+navLinks.forEach(link => {
+    const linkPath = link.getAttribute('href').replace(/\/$/, "") || "/";
+    if (currentPath === linkPath || (linkPath !== "/" && currentPath.startsWith(linkPath))) {
+        link.classList.add('active');
+    }
+});
+</script>
+
+{% block scripts %}{% endblock %}
+
+</body>
+</html>

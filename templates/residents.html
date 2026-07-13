@@ -1,0 +1,259 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <h1>Resident Records</h1>
+
+
+</div>
+
+<!-- SEARCH -->
+
+<div class="panel">
+
+    <div style="display:flex;gap:10px;align-items:center;">
+
+        <input type="text" id="searchResident" placeholder="Search by Resident ID or Name..." style="flex:1;">
+
+        <button class="btn btn-primary" onclick="loadResidents()">
+
+            Search
+
+        </button>
+
+    </div>
+
+</div>
+
+<br>
+
+<!-- RESIDENT TABLE -->
+
+<div class="panel">
+
+    <table>
+
+        <thead>
+
+            <tr>
+
+                <th>Resident No.</th>
+
+                <th>Name</th>
+
+                <th>Sex</th>
+
+                <th>Age</th>
+
+                <th>Purok</th>
+
+                <th>Period of Residence</th>
+
+                <th width="280">Actions</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody id="residentTable">
+
+        </tbody>
+
+    </table>
+
+</div>
+
+<div id="archiveModal" class="modal-overlay" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="archiveModalTitle">
+        <div class="modal-header">
+            <h2 class="modal-title" id="archiveModalTitle">Archive Resident</h2>
+            <button type="button" class="modal-close" onclick="closeArchiveModal()" aria-label="Close">×</button>
+        </div>
+        <div class="modal-body">
+            <p>Select a reason for archiving this resident.</p>
+            <select id="archiveReasonSelect" class="modal-select"></select>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" onclick="closeArchiveModal()">Cancel</button>
+            <button type="button" class="btn btn-primary" id="archiveConfirmBtn">Archive</button>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script>
+
+    let currentArchiveResidentId = null;
+    let currentArchiveReasons = [];
+
+    function loadResidents() {
+
+        fetch("/api/residents")
+
+            .then(response => response.json())
+
+            .then(data => {
+
+                const search =
+                    document.getElementById("searchResident")
+                        .value
+                        .toLowerCase();
+
+                const tbody =
+                    document.getElementById("residentTable");
+
+                tbody.innerHTML = "";
+
+                data.forEach(resident => {
+
+                    const fullname =
+                        (
+                            resident.first_name +
+                            " " +
+                            resident.last_name
+                        ).toLowerCase();
+
+                    const residentNo =
+                        resident.resident_id.toString();
+
+                    if (
+
+                        fullname.includes(search)
+
+                        ||
+
+                        residentNo.includes(search)
+
+                    ) {
+
+                        tbody.innerHTML += `
+
+                <tr>
+
+                <td>${resident.resident_id}</td>
+
+                <td>
+
+                    ${resident.first_name}
+
+                    ${resident.middle_name || ""}
+
+                    ${resident.last_name}
+
+                </td>
+
+                <td>${resident.sex || resident.gender}</td>
+
+                <td>${resident.age}</td>
+
+                <td>${resident.purok || "-"}</td>
+
+                <td>${resident.period_of_residence || "-"}</td>
+
+                <td>
+    <div class="action-buttons">
+
+        <a
+        href="/residents/${resident.resident_id}"
+        class="btn btn-info">
+            View
+        </a>
+
+        <a
+        href="/residents/${resident.resident_id}/edit"
+        class="btn btn-warning">
+            Edit
+        </a>
+
+        <button
+        class="btn btn-secondary"
+        onclick="archiveResident(${resident.resident_id})">
+            Archive
+        </button>
+
+    </div>
+</td>
+
+                </tr>
+
+                `;
+
+                    }
+
+                });
+
+            });
+
+    }
+
+    async function archiveResident(id) {
+        const response = await fetch("/api/residents/archive/reasons");
+        if (!response.ok) {
+            alert("Unable to load archive reasons.");
+            return;
+        }
+
+        const reasons = await response.json();
+        currentArchiveResidentId = id;
+        currentArchiveReasons = reasons;
+
+        const select = document.getElementById("archiveReasonSelect");
+        select.innerHTML = reasons.map((reason, index) => `
+        <option value="${index}">${reason}</option>
+    `).join("");
+
+        document.getElementById("archiveModal").classList.add("active");
+        document.getElementById("archiveModal").setAttribute("aria-hidden", "false");
+    }
+
+    function closeArchiveModal() {
+        document.getElementById("archiveModal").classList.remove("active");
+        document.getElementById("archiveModal").setAttribute("aria-hidden", "true");
+        currentArchiveResidentId = null;
+        currentArchiveReasons = [];
+    }
+
+    async function confirmArchive() {
+        const select = document.getElementById("archiveReasonSelect");
+        const index = parseInt(select.value, 10);
+        if (Number.isNaN(index) || index < 0 || index >= currentArchiveReasons.length) {
+            alert("Please select a valid archive reason.");
+            return;
+        }
+
+        const reason = currentArchiveReasons[index];
+        if (!confirm(`Archive this resident for reason: ${reason}?`)) return;
+
+        await fetch(`/api/residents/${currentArchiveResidentId}/archive`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ reason })
+        });
+        closeArchiveModal();
+        loadResidents();
+    }
+
+    document
+        .getElementById("searchResident")
+        .addEventListener(
+
+            "keyup",
+
+            loadResidents
+
+        );
+
+    document
+        .getElementById("archiveConfirmBtn")
+        .addEventListener("click", confirmArchive);
+
+    loadResidents();
+
+</script>
+
+{% endblock %}
