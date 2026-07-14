@@ -792,12 +792,16 @@ officer-row{
 
 .action-buttons{
     display:flex;
-    flex-wrap:wrap;
+    flex-wrap:nowrap;
     gap:8px;
     align-items:center;
+    justify-content:flex-start;
+    white-space:nowrap;
+    overflow-x:auto;
 }
 
 .action-buttons .btn{
+    flex:0 0 auto;
     white-space:nowrap;
 }
 
@@ -1154,17 +1158,20 @@ officer-row{
 
 .action-buttons{
     display: flex;
-    flex-direction: column;
+    flex-wrap: nowrap;
     gap: 8px;
-    width: 120px;
-    margin: auto;
+    align-items: center;
+    justify-content: flex-start;
+    white-space: nowrap;
+    overflow-x: auto;
 }
 
 .action-buttons .btn{
-    width: 100%;
-    height: 40px;
-    display: flex;
+    flex: 0 0 auto;
+    min-height: 40px;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     box-sizing: border-box;
+    white-space: nowrap;
 }

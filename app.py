@@ -23,7 +23,6 @@ app.config.update(
     SECRET_KEY="barangay-shared-secret-key",
     SESSION_COOKIE_NAME="barangay_shared_session",
     SESSION_COOKIE_PATH="/",
-    SESSION_COOKIE_DOMAIN="127.0.0.1",
     SESSION_COOKIE_HTTPONLY=True,
     SESSION_COOKIE_SAMESITE="Lax",
 )
