@@ -622,10 +622,8 @@ textarea:focus{
     justify-content:flex-end;
     margin-top:12px;
     padding-top:16px;
-    border-top:1px solid #e5e7eb;
     position:sticky;
     bottom:16px;
-    background:#fff;
     z-index:2;
 }
 
